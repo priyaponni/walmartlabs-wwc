@@ -14,9 +14,10 @@ const Promise = require("bluebird");
 const readFileAsync = Promise.promisify(fs.readFile);
 
 
-function storeInitializer(req, vehicles) {
+function storeInitializer(req, vehicles, transactions) {
   let initialState = {
-    cars: vehicles
+    cars: vehicles,
+    transactions : transactions
   };
   return createStore(rootReducer, initialState);
 }
@@ -30,8 +31,16 @@ function createReduxStore(req, match) {
       })
       .catch(() => {
         return {};
+      }),
+    req.server 
+      .inject("/transactions")
+      .then(res => {
+        return JSON.parse(res.payload);
       })
-  ]).then(([vehicles]) => storeInitializer(req, vehicles));
+      .catch(() => {
+        return {};
+      })
+  ]).then(([vehicles, transactions]) => storeInitializer(req, vehicles, transactions));
 }
 
 module.exports = req => {

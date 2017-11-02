@@ -25,6 +25,9 @@ module.exports = {
     "server/plugins/vehicles": {
       "module": "./{{env.APP_SRC_DIR}}/server/plugins/vehicles"
     },
+    "server/plugins/transactions": {
+      "module": "./{{env.APP_SRC_DIR}}/server/plugins/transactions"
+    },
     "webapp": {
       "module": "electrode-react-webapp/lib/hapi",
       "options": {

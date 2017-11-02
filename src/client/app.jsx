@@ -6,8 +6,9 @@ import React from "react";
 import { render } from "react-dom";
 import { routes } from "./routes";
 import { Router, browserHistory } from "react-router";
-import { createStore } from "redux";
+import { createStore,  applyMiddleware, compose } from "redux";
 import { Provider } from "react-redux";
+import thunk from 'redux-thunk';
 import rootReducer from "./reducers";
 //
 
@@ -19,7 +20,10 @@ import rootReducer from "./reducers";
 
 window.webappStart = () => {
   const initialState = window.__PRELOADED_STATE__;
-  const store = createStore(rootReducer, initialState);
+  const store = createStore(rootReducer, initialState,compose(
+    applyMiddleware(thunk),
+    window.devToolsExtension ? window.devToolsExtension() : f => f
+  ));
   render(
     <Provider store={store}>
       <Router history={browserHistory}>{routes}</Router>
